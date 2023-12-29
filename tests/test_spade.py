@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 import pandas as pd
-from SPADE.spade import read_dataset, find_F1, spade
+from src.SPADE.spade import read_dataset, find_F1, spade
 
 
 @pytest.fixture()
@@ -39,7 +39,7 @@ def result_expected() -> pd.DataFrame:
 ])
 
 def test_read_dataset(df_expected):
-    df_returned = read_dataset('tests/test_data.txt')
+    df_returned = read_dataset('test_data.txt')
     pd.testing.assert_frame_equal(df_returned, df_expected)
 
 

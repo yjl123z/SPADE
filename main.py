@@ -1,4 +1,4 @@
-from SPADE.spade import spade, read_dataset
+from src.SPADE.spade import spade, read_dataset
 from datetime import datetime
 import time
 import matplotlib.pyplot as plt

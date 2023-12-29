@@ -84,7 +84,7 @@ def find_F2(F1: dict, supports: pd.DataFrame, min_sup: int) -> Tuple[pd.DataFram
                     event_item_df = event_items_join(F1[repr(item1)], F1[repr(item2)])           
                     support_value = event_item_df['SID'].nunique()
                     if support_value >= min_sup:
-                        supports = supports.append({'Items': event_item, 'Support': support_value}, ignore_index=True)
+                        supports = supports._append({'Items': event_item, 'Support': support_value}, ignore_index=True)
                         item_lvl_list[event_item]= event_item_df
                 sq2_ctr.add(event_item)
             #generate sequence items     
@@ -94,7 +94,7 @@ def find_F2(F1: dict, supports: pd.DataFrame, min_sup: int) -> Tuple[pd.DataFram
                 sq_item_df = sequence_items_join(F1[repr(item1)], F1[repr(item2)])           
                 support_value = sq_item_df['SID'].nunique()
                 if support_value >= min_sup:
-                    supports = supports.append({'Items': sq_item, 'Support': support_value}, ignore_index=True)
+                    supports = supports._append({'Items': sq_item, 'Support': support_value}, ignore_index=True)
                     item_lvl_list[sq_item] = sq_item_df 
             sq2_ctr.add(sq_item)
         item_tree[repr([(set(sorted(item1)))])] = item_lvl_list
@@ -173,7 +173,7 @@ def find_remaining(item_tree: dict, supports: pd.DataFrame, min_sup: int) -> Tup
                             # TODO
                             support_value = sdfs['SID'].nunique()
                             if support_value >= min_sup:
-                                supports = supports.append({'Items': repr(generated), 'Support': support_value}, ignore_index=True)
+                                supports = supports._append({'Items': repr(generated), 'Support': support_value}, ignore_index=True)
                                 three_dict[repr(item1)][repr(generated)] = sdfs   
                             crtl_lst.add(repr(generated))
                     else:
@@ -181,7 +181,7 @@ def find_remaining(item_tree: dict, supports: pd.DataFrame, min_sup: int) -> Tup
                             if repr(item) not in crtl_lst:
                                 support_value = sdf['SID'].nunique()
                                 if support_value >= min_sup:
-                                    supports = supports.append({'Items': repr(item), 'Support': support_value}, ignore_index=True)
+                                    supports = supports._append({'Items': repr(item), 'Support': support_value}, ignore_index=True)
                                     three_dict[repr(item1)][repr(item)] = sdf                          
                                 crtl_lst.add(repr(item))
                 #event atom with sequence atom: PB with P->A should give PB->A   
@@ -190,7 +190,7 @@ def find_remaining(item_tree: dict, supports: pd.DataFrame, min_sup: int) -> Tup
                     if repr(generated) not in crtl_lst:
                             support_value = sdf['SID'].nunique()
                             if support_value >= min_sup:
-                                supports = supports.append({'Items': repr(generated), 'Support': support_value}, ignore_index=True)
+                                supports = supports._append({'Items': repr(generated), 'Support': support_value}, ignore_index=True)
                                 three_dict[repr(item1)][repr(generated)] = sdf
 
                             crtl_lst.add(repr(generated))
@@ -212,6 +212,6 @@ def spade(df: pd.DataFrame, min_sup: int):
     return supports
 
 if __name__ == "__main__":
-    df = read_dataset(r"src/SPADE/BMS1_test.txt")
-    support_results = spade(df, 2)
+    df = read_dataset("tests/test_data.txt")
+    support_results = spade(df,2)
     support_results.to_csv(f'results_{datetime.now().strftime("%y-%m-%d-%H:%M")}.txt')
